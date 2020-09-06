@@ -9,9 +9,10 @@
     <b-col sm="6" offset="3">
      <QuestionBox
        v-if= "questions.length"
+      :numTotal="numTotal"
+      :numCorrect= "numCorrect"
       :CurrentQuestion="questions[index]"
       :next="next"
-      :i="index"
       :increment = "increment"
      />
     </b-col>
@@ -42,13 +43,17 @@ export default {
   },
   methods: {
     next() {
-      this.index++
+      if(this.index<=9) {
+        this.index++
+      this.numTotal++         
+      }
+      
     },
     increment(isCorrect) {
       if(isCorrect) {
         this.numCorrect++
       }
-      this.numTotal++
+      
     }
   },
   mounted: function() {

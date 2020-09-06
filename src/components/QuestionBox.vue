@@ -1,7 +1,9 @@
 <template>
     <div class="question-box-container">
-  <b-jumbotron>
-    <template v-slot:header>Question {{i+1}}</template>
+  <b-jumbotron v-if="numTotal<10">
+    <template v-slot:header> Question
+    {{numTotal+1}}
+    </template>
 
     <template v-slot:lead>
      {{CurrentQuestion.question}}
@@ -12,7 +14,6 @@
     <b-list-group>
       <b-list-group-item v-for="(answer, index) in shuffledAnswers" :key="index"  @click.prevent="selectAnswer(index)"
       :class="answerClass(index)"
-      
       >
       {{answer}}
       </b-list-group-item>
@@ -25,11 +26,20 @@
 
     <b-button variant="primary"  @click="submitAnswer" 
     :disabled="selectedIndex === null || answered"
-     >Submit</b-button>
+     >Submit
+     </b-button>
+
     <b-button @click= "next" variant="success"
     :disabled="!answered"
     >Next</b-button>
   </b-jumbotron>
+
+  <b-jumbotron v-else class="final">
+       <template v-slot:lead  > Final score is
+     {{numCorrect}}/{{numTotal}}
+    </template> 
+  </b-jumbotron>
+ 
 </div>
 </template>
 
@@ -40,7 +50,9 @@ export default {
   props: {
     CurrentQuestion: Object,
     next: Function, 
-    increment: Function
+    increment: Function,
+    numTotal: Object,
+    numCorrect: Object
   },
   data() {
     return{
@@ -48,7 +60,7 @@ export default {
       correctIndex: null,
       shuffledAnswers: [],
       answered: false,
-      i: 0
+      
     }
   },
   computed: {
@@ -121,5 +133,9 @@ export default {
 .incorrect{
   background-color: red;
 }
-
+.final{
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   font-size: 120px;
+   color: #552382;
+}
 </style>
